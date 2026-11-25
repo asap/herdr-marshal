@@ -1,0 +1,6 @@
+{
+  "projects": [
+    { "name": "api", "root": "~/code/api" },
+    { "name": "website", "root": "~/code/website", "labels": ["Web*"] }
+  ]
+}

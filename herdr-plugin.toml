@@ -1,0 +1,67 @@
+id = "asap.herdr-marshal"
+name = "Herdr Marshal"
+version = "0.1.0"
+min_herdr_version = "0.9.3"
+description = "Brings order to your herdr: groups workspaces by project."
+platforms = ["linux", "macos"]
+
+[[actions]]
+id = "preview"
+title = "Marshal: preview project order"
+description = "Print what organize would change. Changes nothing."
+command = ["node", "--experimental-strip-types", "bin/marshal.ts", "organize", "--dry-run"]
+
+[[actions]]
+id = "organize"
+title = "Marshal: organize by project"
+description = "Order workspaces and the Agents panel by project, and draw project headings."
+command = ["node", "--experimental-strip-types", "bin/marshal.ts", "organize"]
+
+[[actions]]
+id = "reset"
+title = "Marshal: release the Agents panel"
+description = "Clear marshal's Agents view and project tags. Workspace order is kept."
+command = ["node", "--experimental-strip-types", "bin/marshal.ts", "reset"]
+
+# The flag is needed before Node 22.18, and Herdr may run an older Node than your shell does.
+# Tags die with the server, and the sidebar rows show nothing without them.
+[[startup]]
+command = ["node", "--experimental-strip-types", "bin/marshal.ts", "organize"]
+
+# shortcut: one short-lived Node process per event; move to a resident subscriber if that gets noticeable.
+
+[[events]]
+on = "workspace.created"
+command = ["node", "--experimental-strip-types", "bin/marshal.ts", "refresh"]
+
+[[events]]
+on = "workspace.closed"
+command = ["node", "--experimental-strip-types", "bin/marshal.ts", "refresh"]
+
+[[events]]
+on = "workspace.renamed"
+command = ["node", "--experimental-strip-types", "bin/marshal.ts", "refresh"]
+
+[[events]]
+on = "pane.created"
+command = ["node", "--experimental-strip-types", "bin/marshal.ts", "refresh"]
+
+[[events]]
+on = "pane.closed"
+command = ["node", "--experimental-strip-types", "bin/marshal.ts", "refresh"]
+
+[[events]]
+on = "pane.exited"
+command = ["node", "--experimental-strip-types", "bin/marshal.ts", "refresh"]
+
+[[events]]
+on = "pane.moved"
+command = ["node", "--experimental-strip-types", "bin/marshal.ts", "refresh"]
+
+[[events]]
+on = "pane.agent_detected"
+command = ["node", "--experimental-strip-types", "bin/marshal.ts", "refresh"]
+
+[[events]]
+on = "pane.agent_status_changed"
+command = ["node", "--experimental-strip-types", "bin/marshal.ts", "refresh"]
